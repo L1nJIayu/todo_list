@@ -6,6 +6,8 @@ export const useTodoListContext = () => useContext(TodoListContext)
 
 export const TodoListProvider = ({ children }) => {
   const [ list , setList ] = useState([])
+  const [ isShowUpdateDrawer, setIsShowUpdateDrawer ] = useState(false)
+  console.log(isShowUpdateDrawer)
 
   
   useEffect(() => {
@@ -26,13 +28,13 @@ export const TodoListProvider = ({ children }) => {
     setList(newList)
     updateData(newList)
   }
+
   const removeItem = (id) => {
     const target_index = list.findIndex(item => item.id === id)
     const newList = list.toSpliced(target_index, 1)
     setList([...newList])
     updateData(newList)
   }
-
 
   const updateData = (data) => {
     localStorage.setItem('data', JSON.stringify(data))
@@ -44,7 +46,9 @@ export const TodoListProvider = ({ children }) => {
         list,
         setList,
         appendItem,
-        removeItem
+        removeItem,
+        isShowUpdateDrawer,
+        setIsShowUpdateDrawer,
       }}
     >
       { children }
