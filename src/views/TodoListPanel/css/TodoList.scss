@@ -1,0 +1,130 @@
+
+
+.panel {
+  color: #FFF;
+  
+  width: 80%;
+  max-width: 1200px;
+  height: 80%;
+  padding: 24px 48px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(15px);
+  
+  .actions {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .status_filter_selector {
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      & > div {
+        color: #fefefe;
+        font-size: .8rem;
+        font-weight: 600;
+        text-align: center;
+        background-color: transparent;
+        width: 80px;
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 8px;
+        margin-right: 12px;
+        cursor: pointer;
+        transition: background-color .5s;
+        &:hover {
+          color: #e19337;
+          border: 1px solid #e19337;
+        }
+      }
+      .active {
+        color: #e19337;
+        background-color: #f6e3cd;
+        border: 1px solid transparent;
+      }
+    }
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 24px;
+  }
+  .form {
+    display: flex;
+    .ant-btn {
+      margin: 0 12px;
+    }
+  }
+  .list {
+    max-height: calc(100% - 140px);
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    margin-top: 24px;
+    overflow: auto;
+    transition: all 1s;
+    .list_item {
+      color: #FFF;
+      padding: 24px;
+  
+      display: flex;
+      justify-content: space-between;
+
+      &:not(:last-child) {
+        border-bottom: 1px dashed #CCC;
+      }
+      &:hover {
+        .list_item-actions {
+          visibility: visible;
+        }
+      }
+      .list_item-left {
+        display: flex;
+        align-items: center;
+        .list_item-checkbox {
+          margin-right: 16px;
+        }
+        .list_item-title {
+          font-size: 1.2rem;
+          font-weight: 600;
+          text-decoration-thickness: 8px;
+          position: relative;
+          animation: 1s show forwards;
+        }
+        .list_item-content {
+          color: rgba(255, 255, 255, .5);
+          font-size: .8rem;
+          text-decoration-thickness: 8px;
+          padding-left: 8px;
+          margin-top: 12px;
+          position: relative;
+          animation: 1s show forwards;
+        }
+      }
+      .list_item-actions {
+        visibility: hidden;
+        color: #FFF;
+        .ant-btn {
+          margin: 0 8px;
+        }
+      }
+      
+    }
+  }
+}
+
+
+@keyframes show {
+  0% {
+    left: -20px;
+    opacity: 0;
+  }
+  100% {
+    left: 0;
+    opacity: 1;
+  }
+}

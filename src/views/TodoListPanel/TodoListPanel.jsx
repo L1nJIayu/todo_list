@@ -3,18 +3,19 @@ import AppendForm from './AppendForm'
 import TodoList from './TodoList'
 import './css/TodoList.scss'
 import UpdateTodoDrawer from './UpdateTodoDrawer'
+import Actions from './Actions'
 
 const TodoListPanel = () => {
   return (
-    <div className="panel">
-      <div className="title">Todo List</div>
-      <TodoListProvider>
+    <TodoListProvider>
+      <div className="panel">
+        <div className="title">Todo List</div>
+        <Actions />
         <AppendForm />
         <TodoList />
         <UpdateTodoDrawer />
-      </TodoListProvider>
-
-    </div>
+      </div>
+    </TodoListProvider>
   )
 }
 
