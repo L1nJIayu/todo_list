@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect } from "react"
-import { STATUS_DOING, STATUS_DONE } from "../../../assets/dictionary"
+import { createContext, useContext, useState, useEffect, useCallback } from "react"
+import { STATUS_DELETE, STATUS_DOING, STATUS_DONE } from "../../../assets/dictionary"
 import moment from "moment"
 
 const TodoListContext = createContext()
@@ -8,25 +8,13 @@ export const useTodoListContext = () => useContext(TodoListContext)
 
 export const TodoListProvider = ({ children }) => {
   const [ list , setList ] = useState([])
+  const [ filterList, setFilterList ] = useState([])
   const [ isShowUpdateDrawer, setIsShowUpdateDrawer ] = useState(false)
   const [ currActionItem, setCurrActionItem ] = useState(null)
   const [ isShowTodoListDetail, setIsShowTodoListDetail ] = useState(false)
   const [ currStatus, setCurrStatus ] = useState(STATUS_DOING)
   
-  useEffect(() => {
-    init()
-  }, [])
-
-
-  useEffect(() => {
-    setList(prevList => {
-      const data = JSON.parse(localStorage.getItem('data') || '[]')
-      const newList = data.filter(item => item.status === currStatus)
-      return newList
-    })
-  }, [ currStatus ])
-
-  const init = () => {
+  const init = useCallback(() => {
     try {
       const data = localStorage.getItem('data')
       if(data) {
@@ -37,59 +25,85 @@ export const TodoListProvider = ({ children }) => {
     } catch (err) {
       localStorage.setItem('data', JSON.stringify([]))
     }
-  }
+  }, [])
+  useEffect(() => {
+    init()
+  }, [ init ])
+
+  const updateFilterList = useCallback(() => {
+    setFilterList(prevList => {
+      const newList = list.filter(item => item.status === currStatus)
+      return newList
+    })
+  }, [ currStatus, list ])
+  useEffect(() => {
+    updateFilterList()
+  }, [ updateFilterList ])
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      updateData()
+    }, 3000)
+    return () => clearInterval(intervalId)
+  }, [])
 
   const appendItem = (newItem) => {
-    const newList = [newItem, ...list]
-    setList(newList)
-    updateData(newList)
+    setList(prevList => [newItem, ...prevList])
   }
-
-  const removeItem = (id) => {
+  // 伪删除
+  const removeItem = (id) => updateStatus({ id, status: STATUS_DELETE })
+  // 彻底删除
+  const deleteItem = (id) => {
     setList(prevList => {
       const target_index = prevList.findIndex(item => item.id === id)
       if(target_index !== -1) {
         const newList = prevList.toSpliced(target_index, 1)
-        updateData(newList)
         return newList
       } else {
         return prevList
       }
     })
   }
+  const recoveryItem = (id) => {
+    const target = list.find(item => item.id === id)
+    if(target) {
+      if(target.completeTime) {
+        updateStatus({ id, status: STATUS_DONE })
+      } else {
+        updateStatus({ id, status: STATUS_DOING })
+      }
+    }
+
+  }
 
   const modifyItem = (newData) => {
 
-    setList(list => {
+    setList(prevList => {
       const { id } = newData
-      const targetIndex = list.findIndex(item => item.id === id)
+      const targetIndex = prevList.findIndex(item => item.id === id)
 
       if(targetIndex !== -1) {
-        const target = list[targetIndex]
-        list[targetIndex] = {
+        const target = prevList[targetIndex]
+        prevList[targetIndex] = {
           ...target,
           ...newData
         }
-        updateData(list)
       }
       
+      return prevList
+    })
+
+
+  }
+
+  const updateData = () => {
+    setList(list => {
+      console.log(list)
+      localStorage.setItem('data', JSON.stringify(list))
       return list
     })
-
-
   }
-
-  const updateData = (data) => {
-    localStorage.setItem('data', JSON.stringify(data))
-  }
-
-  const updateList = () => {
-    setList(prevList => {
-      const data = JSON.parse(localStorage.getItem('data') || '[]')
-      const newList = data.filter(item => item.status === currStatus)
-      return newList
-    })
-  }
+  
 
   const showUpdateDrawer = (id) => {
     const target = list.find(item => item.id === id)
@@ -99,8 +113,7 @@ export const TodoListProvider = ({ children }) => {
   const hideUpdateDrawer = () => setIsShowUpdateDrawer(false)
 
   const updateStatus = ({ id, status }) => {
-    const data = JSON.parse(localStorage.getItem('data') || '[]')
-    const target = data.find(item => item.id === id)
+    const target = list.find(item => item.id === id)
     if(target) {
       target.status = status
 
@@ -120,10 +133,7 @@ export const TodoListProvider = ({ children }) => {
         default:
           break
       }
-      updateData(data)
-      updateList()
-
-
+      updateFilterList()
     }
   }
 
@@ -131,9 +141,12 @@ export const TodoListProvider = ({ children }) => {
     <TodoListContext.Provider
       value={{
         list,
+        filterList,
         setList,
         appendItem,
         removeItem,
+        deleteItem,
+        recoveryItem,
         modifyItem,
         currActionItem,
         isShowUpdateDrawer,

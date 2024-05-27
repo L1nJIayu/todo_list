@@ -44,8 +44,10 @@
       }
       .active {
         color: #e19337;
-        background-color: #f6e3cd;
-        border: 1px solid transparent;
+        border: 1px solid #e19337;
+        // color: #e19337;
+        // background-color: #f6e3cd;
+        // border: 1px solid transparent;
       }
     }
   }
@@ -67,6 +69,12 @@
     margin-top: 24px;
     overflow: auto;
     transition: all 1s;
+    .ant-empty {
+      padding: 48px 0;
+      .ant-empty-description {
+        color: #FFF;
+      }
+    }
     .list_item {
       color: #FFF;
       padding: 24px;
