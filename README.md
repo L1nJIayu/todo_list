@@ -1,4 +1,4 @@
-# todo_list
+# Todo List
 <p align="center">
   <img src="./public/logo.png" alt="logo">
 </p>
