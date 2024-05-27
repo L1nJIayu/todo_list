@@ -1,7 +1,8 @@
 # todo_list
-<div style="text-align: center;" >
-  <img src="./public/logo.png" />
-</div>
+<p align="center">
+  <img src="./public/logo.png" alt="logo">
+</p>
+
 TODO列表，React练习项目
 [在线地址](http://119.91.211.99/todo/)
 
