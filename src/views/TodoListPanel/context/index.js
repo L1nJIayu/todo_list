@@ -98,7 +98,6 @@ export const TodoListProvider = ({ children }) => {
 
   const updateData = () => {
     setList(list => {
-      console.log(list)
       localStorage.setItem('data', JSON.stringify(list))
       return list
     })
