@@ -12,13 +12,15 @@ import { useTodoListContext } from "./context"
 
 
 const AppendForm = () => {
+  
+  useEffect(() => inputRef.current.focus())
+
   const inputRef = useRef(null)
   const [ title, setTitle ] = useState('')
   const { appendItem } = useTodoListContext()
   const onInputValueCHange = (e) => {
     setTitle(e.target.value)
   }
-  useEffect(() => inputRef.current.focus())
   const append = () => {
     if(!title) {
       message.warning('您还未输入标题呢！')
