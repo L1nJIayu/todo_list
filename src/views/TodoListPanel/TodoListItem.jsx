@@ -7,7 +7,6 @@ import { useCallback, useState } from "react"
 import { STATUS_DELETE, STATUS_DOING, STATUS_DONE } from "../../assets/dictionary"
 
 
-
 const TodoListItem = ({ id, status, title, content }) => {
   const {
     removeItem,

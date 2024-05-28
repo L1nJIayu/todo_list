@@ -23,7 +23,7 @@
       box-sizing: border-box;
       display: flex;
       align-items: center;
-      & > div {
+      .option {
         color: #fefefe;
         font-size: .8rem;
         font-weight: 600;

@@ -31,10 +31,7 @@ export const TodoListProvider = ({ children }) => {
   }, [ init ])
 
   const updateFilterList = useCallback(() => {
-    setFilterList(prevList => {
-      const newList = list.filter(item => item.status === currStatus)
-      return newList
-    })
+    setFilterList(prevList => list.filter(item => item.status === currStatus))
   }, [ currStatus, list ])
   useEffect(() => {
     updateFilterList()
