@@ -13,7 +13,7 @@ import { useTodoListContext } from "./context"
 
 const AppendForm = () => {
   
-  useEffect(() => inputRef.current.focus())
+  useEffect(() => inputRef.current.focus(), [])
 
   const inputRef = useRef(null)
   const [ title, setTitle ] = useState('')
