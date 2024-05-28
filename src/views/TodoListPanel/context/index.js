@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react"
 import { STATUS_DELETE, STATUS_DOING, STATUS_DONE } from "../../../assets/dictionary"
-import moment from "moment"
+import dayjs from "dayjs"
 
 const TodoListContext = createContext()
 
@@ -117,7 +117,7 @@ export const TodoListProvider = ({ children }) => {
         case STATUS_DONE:
           modifyItem({
             ...target,
-            completeTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+            completeTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
           })
           break
         case STATUS_DOING:
