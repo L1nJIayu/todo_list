@@ -4,6 +4,7 @@ import {
   message,
 } from "antd"
 import { useState } from "react"
+import { v4 as uuidv4 } from 'uuid'
 import './css/TodoList.scss'
 import { STATUS_DOING } from '../../assets/dictionary'
 import moment from 'moment'
@@ -31,7 +32,7 @@ const AppendForm = () => {
 
   const createItem = (title) => {
     return {
-      id: parseInt(Math.random() * 10000000),
+      id: uuidv4(),
       title,
       content: null,
       createTime: moment(new Date()).format('yyyy-MM-DD hh:mm:ss'),

@@ -20,8 +20,9 @@ const StatusFilterSelector = () => {
   return (
     <div className="status_filter_selector">
       {
-        options.map(item => (
+        options.map((item, index) => (
           <div
+            key={ index }
             className={
               classNames(
                 'option',
