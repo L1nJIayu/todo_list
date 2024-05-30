@@ -1,4 +1,3 @@
-import { useCallback } from "react"
 import { STATUS_DOING, STATUS_DONE, STATUS_DELETE } from "../../assets/dictionary"
 import { useTodoListContext } from "./context"
 import classNames from "classnames"
@@ -7,9 +6,9 @@ import classNames from "classnames"
 const StatusFilterSelector = () => {
   const { currStatus, setCurrStatus } = useTodoListContext()
 
-  const handleChangeStatus = useCallback((status) => {
+  const handleChangeStatus = (status) => {
     setCurrStatus(status)
-  }, [ setCurrStatus ])
+  }
 
   const options = [
     { label: '未完成', status: STATUS_DOING },

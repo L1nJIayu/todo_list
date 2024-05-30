@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react"
+import { createContext, useContext, useState, useEffect, useCallback } from "react"
 import { STATUS_DELETE, STATUS_DOING, STATUS_DONE } from "../../../assets/dictionary"
 import dayjs from "dayjs"
 
@@ -12,8 +12,12 @@ export const TodoListProvider = ({ children }) => {
   const [ currActionItem, setCurrActionItem ] = useState(null)
   const [ isShowTodoListDetail, setIsShowTodoListDetail ] = useState(false)
   const [ currStatus, setCurrStatus ] = useState(STATUS_DOING)
-  
-  const filterList = useMemo(() => list.filter(item => item.status === currStatus), [ list, currStatus ])
+
+
+  const [ filterList, setFilterList ] = useState([])
+  useEffect(() => {
+    setFilterList(f => list.filter(item => item.status === currStatus))
+  }, [ list, currStatus ])
 
   
   const init = useCallback(() => {

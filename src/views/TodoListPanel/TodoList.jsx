@@ -5,6 +5,7 @@ import { useTodoListContext } from './context'
 
 const TodoList = () => {
   const { filterList } = useTodoListContext()
+  console.log('TodoList---filterList', filterList)
   return (
     <div className="list">
       { filterList.length === 0 && <Empty description="暂无数据" />}

@@ -4,7 +4,7 @@ import { QuestionCircleOutlined, EditOutlined, SyncOutlined } from '@ant-design/
 import classNames from "classnames"
 import './css/TodoList.scss'
 import { useTodoListContext } from "./context"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { STATUS_DELETE, STATUS_DOING, STATUS_DONE } from "../../assets/dictionary"
 
 
@@ -20,7 +20,7 @@ const TodoListItem = ({ id, status, title, content }) => {
   } = useTodoListContext()
   const [ isRemove, setIsRemove ] = useState(false)
 
-  const handleRemove = useCallback((actionFunc) => {
+  const handleRemove = (actionFunc) => {
     setIsRemove(true)
     setTimeout(() => {
       switch(actionFunc) {
@@ -34,9 +34,9 @@ const TodoListItem = ({ id, status, title, content }) => {
           break
       }
     }, 1500)
-  }, [ id, removeItem, deleteItem ])
+  }
 
-  const getActions = useCallback((status) => {
+  const getActions = (status) => {
     let content = null
   
     switch(status) {
@@ -97,8 +97,7 @@ const TodoListItem = ({ id, status, title, content }) => {
     }
   
     return content
-  }, [ id, showUpdateDrawer, handleRemove, recoveryItem ])
-
+  }
   const [ checked, setChecked ] = useState(false)
 
   const [ removeTimer, setRemoveTimer ] = useState(null)
