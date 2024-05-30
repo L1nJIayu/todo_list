@@ -41,7 +41,7 @@ const UpdateTodoItem = () => {
         <Form.Item label="详情" name="content">
           <Input.TextArea  />
         </Form.Item>
-        <Form.Item label="创建时间" name="createTime">
+        <Form.Item label="创建时间">
           { currActionItem?.createTime }
         </Form.Item>
         <Form.Item>

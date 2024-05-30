@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react"
+import { createContext, useContext, useState, useEffect, useCallback } from "react"
 import { STATUS_DELETE, STATUS_DOING, STATUS_DONE } from "../../../assets/dictionary"
 import dayjs from "dayjs"
 
@@ -8,13 +8,11 @@ export const useTodoListContext = () => useContext(TodoListContext)
 
 export const TodoListProvider = ({ children }) => {
   const [ list , setList ] = useState([])
+  const [ filterList, setFilterList ] = useState([])
   const [ isShowUpdateDrawer, setIsShowUpdateDrawer ] = useState(false)
   const [ currActionItem, setCurrActionItem ] = useState(null)
   const [ isShowTodoListDetail, setIsShowTodoListDetail ] = useState(false)
   const [ currStatus, setCurrStatus ] = useState(STATUS_DOING)
-  
-  const filterList = useMemo(() => list.filter(item => item.status === currStatus), [ list, currStatus ])
-
   
   const init = useCallback(() => {
     try {
@@ -32,6 +30,12 @@ export const TodoListProvider = ({ children }) => {
     init()
   }, [ init ])
 
+  const updateFilterList = useCallback(() => {
+    setFilterList(prevList => list.filter(item => item.status === currStatus))
+  }, [ currStatus, list ])
+  useEffect(() => {
+    updateFilterList()
+  }, [ updateFilterList ])
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -108,17 +112,24 @@ export const TodoListProvider = ({ children }) => {
     const target = list.find(item => item.id === id)
     if(target) {
       target.status = status
+
       switch(status) {
         case STATUS_DONE:
-          target.completeTime = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
+          modifyItem({
+            ...target,
+            completeTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss')
+          })
           break
         case STATUS_DOING:
-          target.completeTime = null
+          modifyItem({
+            ...target,
+            completeTime: null
+          })
           break
         default:
           break
       }
-      setList(list => [...list])
+      updateFilterList()
     }
   }
 
