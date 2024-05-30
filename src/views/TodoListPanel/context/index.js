@@ -87,7 +87,7 @@ export const TodoListProvider = ({ children }) => {
         }
       }
       
-      return prevList
+      return [...prevList]
     })
 
 

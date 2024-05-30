@@ -1,6 +1,7 @@
 
 import { Button, Popconfirm, Checkbox } from "antd"
 import { QuestionCircleOutlined, EditOutlined, SyncOutlined } from '@ant-design/icons'
+import classNames from "classnames"
 import './css/TodoList.scss'
 import { useTodoListContext } from "./context"
 import { useCallback, useState } from "react"
@@ -17,6 +18,23 @@ const TodoListItem = ({ id, status, title, content }) => {
     updateStatus,
     currStatus
   } = useTodoListContext()
+  const [ isRemove, setIsRemove ] = useState(false)
+
+  const handleRemove = useCallback((actionFunc) => {
+    setIsRemove(true)
+    setTimeout(() => {
+      switch(actionFunc) {
+        case 'removeItem':
+          removeItem(id)
+          break
+        case 'deleteItem':
+          deleteItem(id)
+          break
+        default:
+          break
+      }
+    }, 1500)
+  }, [ id, removeItem, deleteItem ])
 
   const getActions = useCallback((status) => {
     let content = null
@@ -41,7 +59,7 @@ const TodoListItem = ({ id, status, title, content }) => {
             size="small"
             shape="circle"
             danger
-            onClick={() => removeItem(id)}>X</Button>
+            onClick={() => handleRemove('removeItem')}>X</Button>
         </>)
         break
       case STATUS_DELETE:
@@ -64,7 +82,7 @@ const TodoListItem = ({ id, status, title, content }) => {
             title="彻底删除"
             description="您确定彻底要删除此任务吗？删除后不可恢复"
             icon={ <QuestionCircleOutlined style={{ color: 'red' }} /> }
-            onConfirm={() => deleteItem(id)}
+            onConfirm={() => handleRemove('deleteItem')}
           >
             <Button
               type="primary"
@@ -79,7 +97,7 @@ const TodoListItem = ({ id, status, title, content }) => {
     }
   
     return content
-  }, [ id, showUpdateDrawer, removeItem, recoveryItem, deleteItem ])
+  }, [ id, showUpdateDrawer, handleRemove, recoveryItem ])
 
   const [ checked, setChecked ] = useState(false)
 
@@ -111,7 +129,7 @@ const TodoListItem = ({ id, status, title, content }) => {
   }
 
   return (
-    <div className="list_item">
+    <div className={classNames('list_item', { 'list_item-remove': isRemove })}>
       <div className="list_item-left">
         { currStatus === STATUS_DOING && <Checkbox className="list_item-checkbox" onChange={ onCheckboxChange } /> }
         <div>
