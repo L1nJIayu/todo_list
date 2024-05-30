@@ -67,7 +67,8 @@
     border: 1px solid #CCC;
     border-radius: 10px;
     margin-top: 24px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     .ant-empty {
       padding: 48px 0;
       .ant-empty-description {
